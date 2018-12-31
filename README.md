@@ -48,4 +48,3 @@ Also see https://developer.amazon.com/de/docs/smarthome/understand-the-smart-hom
       7. Click **Save**
 5. Activate your Skill in the Amazon Alexa app or in the web interface
 6. Discover devices
-
