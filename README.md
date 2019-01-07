@@ -1,12 +1,12 @@
 # Home Assistant Proxy for Amazon Alexa
 
-> A Lambda function for proxying requests from an Amazon Alexa skill to [Home Assistant](https://home-assistant.io/).
+> A lightweight Lambda function for proxying requests from an Amazon Alexa skill to [Home Assistant](https://home-assistant.io/).
 
 ## Requirements
 
 * **Amazon Developer** account
 * **AWS** Account
-* Public **Home Assistant** URL with SSL
+* Public **Home Assistant** URL (must be secured with TLS)
 * Home Assistant **Alexa Smart Home** component configuration
 
 Also see https://developer.amazon.com/de/docs/smarthome/understand-the-smart-home-skill-api.html and https://www.home-assistant.io/components/alexa/#smart-home
@@ -48,3 +48,9 @@ Also see https://developer.amazon.com/de/docs/smarthome/understand-the-smart-hom
       7. Click **Save**
 5. Activate your Skill in the Amazon Alexa app or in the web interface
 6. Discover devices
+
+## Differences to [Haaska](https://github.com/mike-grant/haaska)
+
+* Makes use of Home Assistant's [Authentication API](https://developers.home-assistant.io/docs/en/auth_api.html). There is no need to configure an oAuth provider or to create a long lived token.
+* No dependencies to additional Python packages. It is not necessary to create a deployment package and upload it to AWS Lambda. Just copy the code from the `hass_proxy.py` file and paste into the AWS Lambda function editor.
+* No config files. All configuration is done using environment variables.
