@@ -2,7 +2,6 @@ import os
 import json
 import traceback
 from functools import reduce
-from urllib.parse import urljoin
 from botocore.vendored import requests
 
 HASS_URL = os.environ.get('HASS_URL')
@@ -16,10 +15,10 @@ def lambda_handler(event, context):
     try:
         if not HASS_URL:
             raise Exception('HASS_URL env variable not set')
-        url = urljoin(HASS_URL, '/api/alexa/smart_home')
         bearer_token = BEARER_TOKEN or dict_get(event, 'directive.endpoint.scope.token') or dict_get(event, 'directive.payload.scope.token')
         if not bearer_token:
             raise Exception('Bearer token not found')
+        url = HASS_URL.rstrip('/') + '/api/alexa/smart_home'
         headers = {
             'Content-Type': 'application/json',
             'Authorization': f'Bearer {bearer_token}'
