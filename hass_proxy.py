@@ -1,11 +1,13 @@
 import os
+import ssl
 import json
 import traceback
-from functools import reduce
 from urllib import request
+from functools import reduce
 
 HASS_URL = os.environ.get('HASS_URL')
 BEARER_TOKEN = os.environ.get('BEARER_TOKEN')
+VERIFY_SSL = os.environ.get('VERIFY_SSL') != 'false'
 
 def dict_get(dictionary, dotted_key):
     keys = dotted_key.split('.')
@@ -27,7 +29,11 @@ def lambda_handler(event, context):
             'Authorization': f'Bearer {bearer_token}'
         }
         req = request.Request(url, data=json.dumps(event).encode('utf-8'), headers=headers)
-        r = request.urlopen(req)
+        context = ssl.create_default_context()
+        if not VERIFY_SSL:
+            context.check_hostname = False
+            context.verify_mode = ssl.CERT_NONE
+        r = request.urlopen(req, context=context)
         return json.load(r)
     except Exception as e:
         traceback.print_exc()
