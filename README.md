@@ -30,20 +30,19 @@ Also see https://developer.amazon.com/de/docs/smarthome/understand-the-smart-hom
 
    1. Select **Author from scratch**
    2. Enter a function name, e.g. "home_assistant_proxy"
-   3. Select **Python 3.7** as runtime
+   3. Select **Python 3.8** as runtime
    4. Select a **lambda role**, e.g. "lambda_basic_execution"
    5. Click **Create function**
 
 3. Configure **AWS Lambda** function
 
-   1. Copy and paste the code from **hass_proxy.py** into the function code editor
+   1. Copy and paste the code from **hass_proxy.py** into the function code editor and click the "Deploy" button
    2. Add a **HASS_URL** environment variable which is set to the public base URL of your Home Assistant, e.g. "https://your-home-assistant-url.io"
    3. (optional) If you are using a self signed certificate for your Home Assistant, set the **VERIFY_SSL** environment variable to `false`
    4. Add **Alexa Smart Home** trigger
       1. Enter the **Skill ID** from your Alex skill in the **Application ID** field
       2. Select **Enable trigger**
       3. Click **Add**
-   5. Click **Save**
 
 4. Configure **Amazon Alexa Skill**
    1. Enter the **ARN** of the AWS Lambda function
