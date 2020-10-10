@@ -15,14 +15,14 @@ def dict_get(dictionary, dotted_key):
 
 def lambda_handler(event, context):
     try:
-        if not HASS_URL:
-            raise Exception('HASS_URL env variable not set')
+        assert HASS_URL, 'HASS_URL environment variable is not set'
+
         bearer_token = BEARER_TOKEN or \
             dict_get(event, 'directive.endpoint.scope.token') or \
             dict_get(event, 'directive.payload.grantee.token') or \
             dict_get(event, 'directive.payload.scope.token')
-        if not bearer_token:
-            raise Exception('Bearer token not found')
+        assert bearer_token, 'Bearer token missing'
+
         url = HASS_URL.rstrip('/') + '/api/alexa/smart_home'
         headers = {
             'Content-Type': 'application/json',
@@ -30,9 +30,11 @@ def lambda_handler(event, context):
         }
         req = request.Request(url, data=json.dumps(event).encode('utf-8'), headers=headers)
         context = ssl.create_default_context()
-        if not VERIFY_SSL:
+
+        if VERIFY_SSL is False:
             context.check_hostname = False
             context.verify_mode = ssl.CERT_NONE
+
         r = request.urlopen(req, context=context)
         return json.load(r)
     except Exception as e:
